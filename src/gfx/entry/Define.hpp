@@ -1,0 +1,724 @@
+#pragma once
+#include<core/Types.hpp>
+
+namespace tutorial::gfx
+{
+	using GPUHandle = void*;
+
+	struct D3D {};
+
+	enum class ShaderStage
+	{
+		UNKNOWN = 0,
+		VS,
+		GS,
+		PS,
+		CS,
+		Count
+	};
+
+	enum class eFormat
+	{
+		UNKNOWN = 0,
+		R32G32B32A32_TYPELESS = 1,
+		R32G32B32A32_FLOAT = 2,
+		R32G32B32A32_UINT = 3,
+		R32G32B32A32_SINT = 4,
+		R32G32B32_TYPELESS = 5,
+		R32G32B32_FLOAT = 6,
+		R32G32B32_UINT = 7,
+		R32G32B32_SINT = 8,
+		R16G16B16A16_TYPELESS = 9,
+		R16G16B16A16_FLOAT = 10,
+		R16G16B16A16_UNORM = 11,
+		R16G16B16A16_UINT = 12,
+		R16G16B16A16_SNORM = 13,
+		R16G16B16A16_SINT = 14,
+		R32G32_TYPELESS = 15,
+		R32G32_FLOAT = 16,
+		R32G32_UINT = 17,
+		R32G32_SINT = 18,
+		R32G8X24_TYPELESS = 19,
+		D32_FLOAT_S8X24_UINT = 20,
+		R32_FLOAT_X8X24_TYPELESS = 21,
+		X32_TYPELESS_G8X24_UINT = 22,
+		R10G10B10A2_TYPELESS = 23,
+		R10G10B10A2_UNORM = 24,
+		R10G10B10A2_UINT = 25,
+		R11G11B10_FLOAT = 26,
+		R8G8B8A8_TYPELESS = 27,
+		R8G8B8A8_UNORM = 28,
+		R8G8B8A8_UNORM_SRGB = 29,
+		R8G8B8A8_UINT = 30,
+		R8G8B8A8_SNORM = 31,
+		R8G8B8A8_SINT = 32,
+		R16G16_TYPELESS = 33,
+		R16G16_FLOAT = 34,
+		R16G16_UNORM = 35,
+		R16G16_UINT = 36,
+		R16G16_SNORM = 37,
+		R16G16_SINT = 38,
+		R32_TYPELESS = 39,
+		D32_FLOAT = 40,
+		R32_FLOAT = 41,
+		R32_UINT = 42,
+		R32_SINT = 43,
+		R24G8_TYPELESS = 44,
+		D24_UNORM_S8_UINT = 45,
+		R24_UNORM_X8_TYPELESS = 46,
+		X24_TYPELESS_G8_UINT = 47,
+		R8G8_TYPELESS = 48,
+		R8G8_UNORM = 49,
+		R8G8_UINT = 50,
+		R8G8_SNORM = 51,
+		R8G8_SINT = 52,
+		R16_TYPELESS = 53,
+		R16_FLOAT = 54,
+		D16_UNORM = 55,
+		R16_UNORM = 56,
+		R16_UINT = 57,
+		R16_SNORM = 58,
+		R16_SINT = 59,
+		R8_TYPELESS = 60,
+		R8_UNORM = 61,
+		R8_UINT = 62,
+		R8_SNORM = 63,
+		R8_SINT = 64,
+		A8_UNORM = 65,
+		R1_UNORM = 66,
+		R9G9B9E5_SHAREDEXP = 67,
+		R8G8_B8G8_UNORM = 68,
+		G8R8_G8B8_UNORM = 69,
+		BC1_TYPELESS = 70,
+		BC1_UNORM = 71,
+		BC1_UNORM_SRGB = 72,
+		BC2_TYPELESS = 73,
+		BC2_UNORM = 74,
+		BC2_UNORM_SRGB = 75,
+		BC3_TYPELESS = 76,
+		BC3_UNORM = 77,
+		BC3_UNORM_SRGB = 78,
+		BC4_TYPELESS = 79,
+		BC4_UNORM = 80,
+		BC4_SNORM = 81,
+		BC5_TYPELESS = 82,
+		BC5_UNORM = 83,
+		BC5_SNORM = 84,
+		B5G6R5_UNORM = 85,
+		B5G5R5A1_UNORM = 86,
+		B8G8R8A8_UNORM = 87,
+		B8G8R8X8_UNORM = 88,
+		R10G10B10_XR_BIAS_A2_UNORM = 89,
+		B8G8R8A8_TYPELESS = 90,
+		B8G8R8A8_UNORM_SRGB = 91,
+		B8G8R8X8_TYPELESS = 92,
+		B8G8R8X8_UNORM_SRGB = 93,
+		BC6H_TYPELESS = 94,
+		BC6H_UF16 = 95,
+		BC6H_SF16 = 96,
+		BC7_TYPELESS = 97,
+		BC7_UNORM = 98,
+		BC7_UNORM_SRGB = 99,
+		AYUV = 100,
+		Y410 = 101,
+		Y416 = 102,
+		NV12 = 103,
+		P010 = 104,
+		P016 = 105,
+		//420_OPAQUE = 106,
+		YUY2 = 107,
+		Y210 = 108,
+		Y216 = 109,
+		NV11 = 110,
+		AI44 = 111,
+		IA44 = 112,
+		P8 = 113,
+		A8P8 = 114,
+		B4G4R4A4_UNORM = 115,
+
+		P208 = 130,
+		V208 = 131,
+		V408 = 132,
+
+	};
+
+	enum class eUsage
+	{
+		DEFAULT = 0,
+		IMMUTABLE = 1,
+		DYNAMIC = 2,
+		STAGING = 3
+	};
+
+	enum eCpuAccessFlag : uint32
+	{
+		CPU_ACCESS_WRITE = 0x10000L,
+		CPU_ACCESS_READ = 0x20000L
+	};
+
+	enum eBindFlag : uint32
+	{
+		VERTEX_BUFFER = 0x1L,
+		INDEX_BUFFER = 0x2L,
+		CONSTANT_BUFFER = 0x4L,
+		SHADER_RESOURCE = 0x8L,
+		STREAM_OUTPUT = 0x10L,
+		RENDER_TARGET = 0x20L,
+		DEPTH_STENCIL = 0x40L,
+		UNORDERED_ACCESS = 0x80L,
+		DECODER = 0x200L,
+		VIDEO_ENCODER = 0x400L
+	};
+
+	struct SAMPLE_DESC
+	{
+		uint32 Count;
+		uint32 Quality;
+	};
+
+	struct BUFFER_SRV
+	{
+		union
+		{
+			uint32 FirstElement;
+			uint32 ElementOffset;
+		};
+		union
+		{
+			uint32 NumElements;
+			uint32 ElementWidth;
+		};
+	};
+
+	enum class BUFFEREX_SRV_FLAG
+	{
+		RAW = 0x1,
+	};
+
+	struct BUFFEREX_SRV
+	{
+		uint32 FirstElement;
+		uint32 NumElements;
+		uint32 Flags;
+	};
+
+	struct TEX1D_SRV
+	{
+		uint32 MostDetailedMip;
+		uint32 MipLevels;
+	};
+
+	struct TEX1D_ARRAY_SRV
+	{
+		uint32 MostDetailedMip;
+		uint32 MipLevels;
+		uint32 FirstArraySlice;
+		uint32 ArraySize;
+	};
+
+	struct TEX2D_SRV
+	{
+		uint32 MostDetailedMip;
+		uint32 MipLevels;
+	};
+
+	struct TEX2D_ARRAY_SRV
+	{
+		uint32 MostDetailedMip;
+		uint32 MipLevels;
+		uint32 FirstArraySlice;
+		uint32 ArraySize;
+	};
+
+	struct TEX3D_SRV
+	{
+		uint32 MostDetailedMip;
+		uint32 MipLevels;
+	};
+
+	struct TEXCUBE_SRV
+	{
+		uint32 MostDetailedMip;
+		uint32 MipLevels;
+	};
+
+	struct TEXCUBE_ARRAY_SRV
+	{
+		uint32 MostDetailedMip;
+		uint32 MipLevels;
+		uint32 First2DArrayFace;
+		uint32 NumCubes;
+	};
+
+	struct TEX2DMS_SRV
+	{
+		uint32 UnusedField_NothingToDefine;
+	};
+
+	struct TEX2DMS_ARRAY_SRV
+	{
+		uint32 FirstArraySlice;
+		uint32 ArraySize;
+	};
+
+	enum class SRV_DIMENSION
+	{
+		SRV_DIMENSION_UNKNOWN = 0,
+		SRV_DIMENSION_BUFFER = 1,
+		SRV_DIMENSION_TEXTURE1D = 2,
+		SRV_DIMENSION_TEXTURE1DARRAY = 3,
+		SRV_DIMENSION_TEXTURE2D = 4,
+		SRV_DIMENSION_TEXTURE2DARRAY = 5,
+		SRV_DIMENSION_TEXTURE2DMS = 6,
+		SRV_DIMENSION_TEXTURE2DMSARRAY = 7,
+		SRV_DIMENSION_TEXTURE3D = 8,
+		SRV_DIMENSION_TEXTURECUBE = 9,
+		SRV_DIMENSION_TEXTURECUBEARRAY = 10,
+		SRV_DIMENSION_BUFFEREX = 11,
+	};
+
+	struct SHADER_RESOURCE_VIEW_DESC
+	{
+		eFormat Format;
+		SRV_DIMENSION ViewDimension;
+		union
+		{
+		 BUFFER_SRV Buffer;
+		 TEX1D_SRV Texture1D;
+		 TEX1D_ARRAY_SRV Texture1DArray;
+		 TEX2D_SRV Texture2D;
+		 TEX2D_ARRAY_SRV Texture2DArray;
+		 TEX2DMS_SRV Texture2DMS;
+		 TEX2DMS_ARRAY_SRV Texture2DMSArray;
+		 TEX3D_SRV Texture3D;
+		 TEXCUBE_SRV TextureCube;
+		 TEXCUBE_ARRAY_SRV TextureCubeArray;
+		 BUFFEREX_SRV BufferEx;
+		};
+	};
+
+	enum class RTV_DIMENSION
+	{
+		RTV_DIMENSION_UNKNOWN = 0,
+		RTV_DIMENSION_BUFFER = 1,
+		RTV_DIMENSION_TEXTURE1D = 2,
+		RTV_DIMENSION_TEXTURE1DARRAY = 3,
+		RTV_DIMENSION_TEXTURE2D = 4,
+		RTV_DIMENSION_TEXTURE2DARRAY = 5,
+		RTV_DIMENSION_TEXTURE2DMS = 6,
+		RTV_DIMENSION_TEXTURE2DMSARRAY = 7,
+		RTV_DIMENSION_TEXTURE3D = 8
+	};
+
+	struct BUFFER_RTV
+	{
+		union
+		{
+			uint32 FirstElement;
+			uint32 ElementOffset;
+		};
+		union
+		{
+			uint32 NumElements;
+			uint32 ElementWidth;
+		};
+	};
+
+	struct TEX1D_RTV
+	{
+		uint32 MipSlice;
+	};
+
+	struct TEX1D_ARRAY_RTV
+	{
+		uint32 MipSlice;
+		uint32 FirstArraySlice;
+		uint32 ArraySize;
+	};
+
+	struct TEX2D_RTV
+	{
+		uint32 MipSlice;
+	};
+
+	struct TEX2DMS_RTV
+	{
+		uint32 UnusedField_NothingToDefine;
+	};
+
+	struct TEX2D_ARRAY_RTV
+	{
+		uint32 MipSlice;
+		uint32 FirstArraySlice;
+		uint32 ArraySize;
+	};
+
+	struct TEX2DMS_ARRAY_RTV
+	{
+		uint32 FirstArraySlice;
+		uint32 ArraySize;
+	};
+
+	struct TEX3D_RTV
+	{
+		uint32 MipSlice;
+		uint32 FirstWSlice;
+		uint32 WSize;
+	};
+
+	struct RENDER_TARGET_VIEW_DESC
+	{
+		eFormat Format;
+		RTV_DIMENSION ViewDimension;
+		union
+		{
+			BUFFER_RTV Buffer;
+			TEX1D_RTV Texture1D;
+			TEX1D_ARRAY_RTV Texture1DArray;
+			TEX2D_RTV Texture2D;
+			TEX2D_ARRAY_RTV Texture2DArray;
+			TEX2DMS_RTV Texture2DMS;
+			TEX2DMS_ARRAY_RTV Texture2DMSArray;
+			TEX3D_RTV Texture3D;
+		};
+	};
+
+	enum DSV_DIMENSION
+	{
+		DSV_DIMENSION_UNKNOWN = 0,
+		DSV_DIMENSION_TEXTURE1D = 1,
+		DSV_DIMENSION_TEXTURE1DARRAY = 2,
+		DSV_DIMENSION_TEXTURE2D = 3,
+		DSV_DIMENSION_TEXTURE2DARRAY = 4,
+		DSV_DIMENSION_TEXTURE2DMS = 5,
+		DSV_DIMENSION_TEXTURE2DMSARRAY = 6
+	};
+
+	struct TEX1D_DSV
+	{
+		uint32 MipSlice;
+	};
+
+	struct TEX1D_ARRAY_DSV
+	{
+		uint32 MipSlice;
+		uint32 FirstArraySlice;
+		uint32 ArraySize;
+	};
+
+	struct TEX2D_DSV
+	{
+		uint32 MipSlice;
+	};
+
+	struct TEX2D_ARRAY_DSV
+	{
+		uint32 MipSlice;
+		uint32 FirstArraySlice;
+		uint32 ArraySize;
+	};
+
+	struct TEX2DMS_DSV
+	{
+		uint32 UnusedField_NothingToDefine;
+	};
+
+	struct TEX2DMS_ARRAY_DSV
+	{
+		uint32 FirstArraySlice;
+		uint32 ArraySize;
+	};
+
+	enum DSV_FLAG
+	{
+		DSV_READ_ONLY_DEPTH = 0x1L,
+		DSV_READ_ONLY_STENCIL = 0x2L
+	};
+
+	struct DEPTH_STENCIL_VIEW_DESC
+	{
+		eFormat Format;
+		DSV_DIMENSION ViewDimension;
+		uint32 Flags;
+		union
+		{
+			TEX1D_DSV Texture1D;
+			TEX1D_ARRAY_DSV Texture1DArray;
+			TEX2D_DSV Texture2D;
+			TEX2D_ARRAY_DSV Texture2DArray;
+			TEX2DMS_DSV Texture2DMS;
+			TEX2DMS_ARRAY_DSV Texture2DMSArray;
+		};
+	};
+
+	enum class UAV_DIMENSION
+	{
+		UAV_DIMENSION_UNKNOWN = 0,
+		UAV_DIMENSION_BUFFER = 1,
+		UAV_DIMENSION_TEXTURE1D = 2,
+		UAV_DIMENSION_TEXTURE1DARRAY = 3,
+		UAV_DIMENSION_TEXTURE2D = 4,
+		UAV_DIMENSION_TEXTURE2DARRAY = 5,
+		UAV_DIMENSION_TEXTURE3D = 8
+	};
+
+	struct BUFFER_UAV
+	{
+		uint32 FirstElement;
+		uint32 NumElements;
+		uint32 Flags;
+	};
+
+	struct TEX1D_UAV
+	{
+		uint32 MipSlice;
+	};
+
+	struct TEX1D_ARRAY_UAV
+	{
+		uint32 MipSlice;
+		uint32 FirstArraySlice;
+		uint32 ArraySize;
+	};
+
+	struct TEX2D_UAV
+	{
+		uint32 MipSlice;
+	};
+
+	struct TEX2D_ARRAY_UAV
+	{
+		uint32 MipSlice;
+		uint32 FirstArraySlice;
+		uint32 ArraySize;
+	};
+
+	struct TEX3D_UAV
+	{
+		uint32 MipSlice;
+		uint32 FirstWSlice;
+		uint32 WSize;
+	};
+
+	enum BUFFER_UAV_FLAG : uint32
+	{
+		RAW = 0x1,
+		APPEND = 0x2,
+		COUNTER = 0x4
+	};
+
+	struct UNORDERED_ACCESS_VIEW_DESC
+	{
+		eFormat Format;
+		UAV_DIMENSION ViewDimension;
+		union
+		{
+			BUFFER_UAV Buffer;
+			TEX1D_UAV Texture1D;
+			TEX1D_ARRAY_UAV Texture1DArray;
+			TEX2D_UAV Texture2D;
+			TEX2D_ARRAY_UAV Texture2DArray;
+			TEX3D_UAV Texture3D;
+		};
+	};
+
+	enum RESOURCE_MISC_FLAG
+	{
+		RESOURCE_MISC_GENERATE_MIPS = 0x1L,
+		RESOURCE_MISC_SHARED = 0x2L,
+		RESOURCE_MISC_TEXTURECUBE = 0x4L,
+		RESOURCE_MISC_DRAWINDIRECT_ARGS = 0x10L,
+		RESOURCE_MISC_BUFFER_ALLOW_RAW_VIEWS = 0x20L,
+		RESOURCE_MISC_BUFFER_STRUCTURED = 0x40L,
+		RESOURCE_MISC_RESOURCE_CLAMP = 0x80L,
+		RESOURCE_MISC_SHARED_KEYEDMUTEX = 0x100L,
+		RESOURCE_MISC_GDI_COMPATIBLE = 0x200L,
+		RESOURCE_MISC_SHARED_NTHANDLE = 0x800L,
+		RESOURCE_MISC_RESTRICTED_CONTENT = 0x1000L,
+		RESOURCE_MISC_RESTRICT_SHARED_RESOURCE = 0x2000L,
+		RESOURCE_MISC_RESTRICT_SHARED_RESOURCE_DRIVER = 0x4000L,
+		RESOURCE_MISC_GUARDED = 0x8000L,
+		RESOURCE_MISC_TILE_POOL = 0x20000L,
+		RESOURCE_MISC_TILED = 0x40000L,
+		RESOURCE_MISC_HW_PROTECTED = 0x80000L
+	};
+
+	enum FILTER
+	{
+		FILTER_MIN_MAG_MIP_POINT = 0,
+		FILTER_MIN_MAG_POINT_MIP_LINEAR = 0x1,
+		FILTER_MIN_POINT_MAG_LINEAR_MIP_POINT = 0x4,
+		FILTER_MIN_POINT_MAG_MIP_LINEAR = 0x5,
+		FILTER_MIN_LINEAR_MAG_MIP_POINT = 0x10,
+		FILTER_MIN_LINEAR_MAG_POINT_MIP_LINEAR = 0x11,
+		FILTER_MIN_MAG_LINEAR_MIP_POINT = 0x14,
+		FILTER_MIN_MAG_MIP_LINEAR = 0x15,
+		FILTER_ANISOTROPIC = 0x55,
+		FILTER_COMPARISON_MIN_MAG_MIP_POINT = 0x80,
+		FILTER_COMPARISON_MIN_MAG_POINT_MIP_LINEAR = 0x81,
+		FILTER_COMPARISON_MIN_POINT_MAG_LINEAR_MIP_POINT = 0x84,
+		FILTER_COMPARISON_MIN_POINT_MAG_MIP_LINEAR = 0x85,
+		FILTER_COMPARISON_MIN_LINEAR_MAG_MIP_POINT = 0x90,
+		FILTER_COMPARISON_MIN_LINEAR_MAG_POINT_MIP_LINEAR = 0x91,
+		FILTER_COMPARISON_MIN_MAG_LINEAR_MIP_POINT = 0x94,
+		FILTER_COMPARISON_MIN_MAG_MIP_LINEAR = 0x95,
+		FILTER_COMPARISON_ANISOTROPIC = 0xd5,
+		FILTER_MINIMUM_MIN_MAG_MIP_POINT = 0x100,
+		FILTER_MINIMUM_MIN_MAG_POINT_MIP_LINEAR = 0x101,
+		FILTER_MINIMUM_MIN_POINT_MAG_LINEAR_MIP_POINT = 0x104,
+		FILTER_MINIMUM_MIN_POINT_MAG_MIP_LINEAR = 0x105,
+		FILTER_MINIMUM_MIN_LINEAR_MAG_MIP_POINT = 0x110,
+		FILTER_MINIMUM_MIN_LINEAR_MAG_POINT_MIP_LINEAR = 0x111,
+		FILTER_MINIMUM_MIN_MAG_LINEAR_MIP_POINT = 0x114,
+		FILTER_MINIMUM_MIN_MAG_MIP_LINEAR = 0x115,
+		FILTER_MINIMUM_ANISOTROPIC = 0x155,
+		FILTER_MAXIMUM_MIN_MAG_MIP_POINT = 0x180,
+		FILTER_MAXIMUM_MIN_MAG_POINT_MIP_LINEAR = 0x181,
+		FILTER_MAXIMUM_MIN_POINT_MAG_LINEAR_MIP_POINT = 0x184,
+		FILTER_MAXIMUM_MIN_POINT_MAG_MIP_LINEAR = 0x185,
+		FILTER_MAXIMUM_MIN_LINEAR_MAG_MIP_POINT = 0x190,
+		FILTER_MAXIMUM_MIN_LINEAR_MAG_POINT_MIP_LINEAR = 0x191,
+		FILTER_MAXIMUM_MIN_MAG_LINEAR_MIP_POINT = 0x194,
+		FILTER_MAXIMUM_MIN_MAG_MIP_LINEAR = 0x195,
+		FILTER_MAXIMUM_ANISOTROPIC = 0x1d5
+	};
+
+	enum TEXTURE_ADDRESS_MODE
+	{
+		TEXTURE_ADDRESS_WRAP = 1,
+		TEXTURE_ADDRESS_MIRROR = 2,
+		TEXTURE_ADDRESS_CLAMP = 3,
+		TEXTURE_ADDRESS_BORDER = 4,
+		TEXTURE_ADDRESS_MIRROR_ONCE = 5
+	};
+
+	enum COMPARISON_FUNC
+	{
+		COMPARISON_NEVER = 1,
+		COMPARISON_LESS = 2,
+		COMPARISON_EQUAL = 3,
+		COMPARISON_LESS_EQUAL = 4,
+		COMPARISON_GREATER = 5,
+		COMPARISON_NOT_EQUAL = 6,
+		COMPARISON_GREATER_EQUAL = 7,
+		COMPARISON_ALWAYS = 8
+	};
+
+	struct SAMPLER_DESC
+	{
+		FILTER Filter;
+		TEXTURE_ADDRESS_MODE AddressU;
+		TEXTURE_ADDRESS_MODE AddressV;
+		TEXTURE_ADDRESS_MODE AddressW;
+		float MipLODBias;
+		uint32 MaxAnisotropy;
+		COMPARISON_FUNC ComparisonFunc;
+		float BorderColor[4];
+		float MinLOD;
+		float MaxLOD;
+	};
+}
+
+
+namespace tutorial::gfx
+{
+	enum class ClearFlag
+	{
+		CLR_COLOR_RT0 = (1 << 0),
+		CLR_COLOR_RT1 = (1 << 1),
+		CLR_COLOR_RT2 = (1 << 2),
+		CLR_COLOR_RT3 = (1 << 3),
+		CLR_DEPTH = (1 << 4)
+	};
+
+	enum class SamplerState
+	{
+		Linear,
+		LinearClamp,
+		Point,
+		Shadow,
+	};
+
+	/// Texture usage types.
+	enum class TextureUsage
+	{
+		TEXTURE_STATIC = 0,
+		TEXTURE_DYNAMIC,
+		TEXTURE_RENDERTARGET,
+		TEXTURE_DEPTHSTENCIL,
+	};
+
+	// ========================================================
+	// high level Geometry
+	// ========================================================
+
+	enum class IndexFormat
+	{
+		IDXFMT_16 = 57 /*DXGI_FORMAT_R16_UINT*/,
+		IDXFMT_32 = 42  /*DXGI_FORMAT_R32_UINT*/
+	};
+
+	enum class PrimType
+	{
+		PRIM_POINTLIST = 1, /*D3D_PRIMITIVE_TOPOLOGY_POINTLIST*/
+		PRIM_TRILIST = 4 /*PRIMITIVE_TOPOLOGY_TRIANGLELIST*/,
+		PRIM_TRISTRIP = 5 /*PRIMITIVE_TOPOLOGY_TRIANGLESTRIP*/,
+		PRIM_LINELIST = 2  /*PRIMITIVE_TOPOLOGY_LINELIST*/
+	};
+
+	enum class DepthFunc
+	{
+		DSS_DEPTHFUNC_LESS_EQUAL = 0,
+		DSS_DEPTHFUNC_LESS,
+		DSS_DEPTHFUNC_EQUAL,
+		DSS_DEPTHFUNC_GREATER,
+		DSS_DEPTHFUNC_GREATER_EQUAL,
+		DSS_DEPTHFUNC_ALWAYS
+	};
+
+	enum class PolyCullMode
+	{
+		PCM_NONE = 1,  /*CULL_NONE*/
+		PCM_FRONT = 2, /*CULL_FRONT*/
+		PCM_BACK = 3  /*CULL_BACK*/
+	};
+
+	enum class PolyFillMode
+	{
+		PFM_WIRE = 2,/*FILL_WIREFRAME*/
+		PFM_SOLID = 3, /*FILL_SOLID*/
+	};
+
+	enum class BlendFunc
+	{
+		BS_BLEND_ZERO = 0,
+		BS_BLEND_ONE,
+		BS_BLEND_SRC_ALPHA,
+		BS_BLEND_INV_SRC_ALPHA,
+		BS_BLEND_DEST_COLOR
+	};
+
+	enum class VertexElementType
+	{
+		INT = 0, // int 32bit
+		FLOAT,   // float 32bit
+		FLOAT2,  // float 32bit x2
+		FLOAT3,  // float 32bit x3
+		FLOAT4,  // float 32bit x4
+		BYTE4,  // byte/unsigned char 8bit x4 
+		RGBA_UNORM,  // byte/unsigned char 8bit x4 
+
+		Count,
+	};
+
+	enum class BlendMode
+	{
+		Replace,			// blendEnable =false
+		AlphaBlend,	// srcAlpha, 1-srcAlpha  add
+		Add,					// one			one  add
+		Mult,					// one			one  mult
+		BlendAdd,			// src.a * src.rgb + dst.rgb
+
+		Count,
+	};
+}

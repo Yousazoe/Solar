@@ -1,0 +1,8 @@
+E:/Dev/Solar/repo/build/CMakeFiles/ALL_BUILD.dir
+E:/Dev/Solar/repo/build/CMakeFiles/ZERO_CHECK.dir
+E:/Dev/Solar/repo/build/projects/core/CMakeFiles/Core.dir
+E:/Dev/Solar/repo/build/projects/hw/CMakeFiles/Hardware.dir
+E:/Dev/Solar/repo/build/projects/imgui/CMakeFiles/Imgui.dir
+E:/Dev/Solar/repo/build/projects/imgui/CMakeFiles/ALL_BUILD.dir
+E:/Dev/Solar/repo/build/projects/gui/CMakeFiles/Gui.dir
+E:/Dev/Solar/repo/build/projects/app/CMakeFiles/App.dir
