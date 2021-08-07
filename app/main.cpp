@@ -12,7 +12,7 @@ int main()
 	
 	int window_width = 1024;
 	int window_height = 768;
-	auto window = hw::Window{ hw::VideoMode(window_width, window_height), "RaytracingTutorial (Author : JackSqurrel)" };
+	auto window = hw::Window{ hw::VideoMode(window_width, window_height), "Solar RenderingEngine" };
 	App app{ window };
 	app.swapchain = gfx::create_swapchain(app.window.getSystemHandle(), window_width, window_height);
 	auto& swapchain = app.swapchain;
