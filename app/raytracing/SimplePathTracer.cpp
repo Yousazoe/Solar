@@ -1,3 +1,6 @@
+// Desc :simple scene path tracer
+// lambert diffuse ball only
+
 #include"../Demo.hpp"
 #include"FrameBuffers.hpp"
 #include"ScreenRayTracer.hpp"
@@ -19,9 +22,10 @@ namespace uniforms
 	}
 }
 
+
 void ___PathTracerSimple(App& app,  bool init)
 {
-	static Shader shader{ "simple-6-scene/PathTracerSimple" };
+	static Shader shader{ "simple-pt/PathTracerSimple" };
 	static auto main_fb = ___frame_buffer_HDR2(1024, 768);
 	static auto prev_main_fb = ___frame_buffer_HDR2(1024, 768);
 	static Random random;

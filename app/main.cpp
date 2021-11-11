@@ -82,7 +82,3 @@ int main()
 	
 	gfx::shutdown();
 }
-
-
-
-
